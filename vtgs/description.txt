@@ -1,0 +1,14 @@
+[h1][noparse][VGS] SIGMAR[/noparse][/h1]
+
+Are you the [i]greatest[/i]? Are your team mates [i]graceful[/i]? Do you yearn for [i]woohoo[/i]?
+
+If you answered the above questions, VTGS is here for you!
+
+Send messages like that one game that died :(
+but without the cool voice lines!
+
+Full list of commands on [url=https://github.com/Flintlocket/vermintide-mods/wiki/VTGS]Git[/url]
+
+I just made the list off the top of my head, so let me know if you think CHANGES should be made.
+
+Todo: Put the command list in user settings so people can modify it
