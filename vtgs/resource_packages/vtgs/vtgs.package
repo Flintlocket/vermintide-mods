@@ -1,0 +1,11 @@
+mod = [
+	"vtgs"
+]
+
+package = [
+	"resource_packages/vtgs/vtgs"
+]
+
+lua = [
+	"scripts/mods/vtgs/*"
+]
