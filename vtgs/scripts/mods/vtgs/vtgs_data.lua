@@ -1,8 +1,8 @@
 local mod = get_mod("VTGS")
 
 return {
-	name = "VTGS",
-	description = mod:localize("mod_description"),
+  name = "VTGS",
+  description = mod:localize("mod_description"),
   is_togglable = true,
   options = {
     widgets = {
