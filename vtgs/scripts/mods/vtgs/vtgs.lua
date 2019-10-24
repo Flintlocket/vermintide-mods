@@ -1,5 +1,7 @@
 -- Vermintide Get-better-at-communicating System
 local mod = get_mod("VTGS")
+
+-- TODO: Fix text stuff for 2.0.3
 mod.basic_gui = get_mod("BasicUI") -- For text_width
 mod.simple_ui = get_mod("SimpleUI")
 
@@ -15,15 +17,18 @@ VTGS_SIMPLE_KEY_MAP.xb1 = VTGS_SIMPLE_KEY_MAP.win32
 mod.command = ""
 mod.last_key = nil
 mod.activated = false
-mod.tier = 1
 mod.list = {}
 mod.list_keys = {}
 mod.trigger_clear = false
+mod.prepend_text = ""
+mod.prepend_command = ""
 mod.vtgs = {
   -- Command
   ["c"] = "[C] - Command *",
-    ["cb"] = "[B] - Pick up the bomb",
+    ["cb"] = "[B] - Pick up the barrel",
+    ["ce"] = "[E] - Pick up the bomb", -- The E stands for Explosive!
     ["cc"] = "[C] - Come here!",
+    ["cd"] = "[D] - Do the thing!",
     ["cf"] = "[F] - Push forward!",
     ["cg"] = "[G] - Pick up the grimoire",
     ["ch"] = "[H] - Pick up the healing",
@@ -31,6 +36,21 @@ mod.vtgs = {
     ["cr"] = "[R] - Retreat!",
     ["ct"] = "[T] - Pick up the tome",
     ["cw"] = "[W] - Wait",
+  -- Enemy
+  ["e"] = "[E] - Enemy *",
+    ["ea"] = "[A] - Assassin!",
+    ["eb"] = "[B] - Blightstormer!",
+    ["ec"] = "[C] - Chaos Warrior!",
+    ["ee"] = "[E] - Sack Rat!",
+    ["eg"] = "[G] - Globadier!",
+    ["ek"] = "[K] - Skaven Plague Monk!",
+    ["el"] = "[L] - Life Leech!",
+    ["ep"] = "[P] - Packmaster!",
+    ["er"] = "[R] - Ratling Gunner!",
+    ["es"] = "[S] - Chaos Savage!",
+    ["ev"] = "[V] - Storm Vermin!",
+    ["ew"] = "[W] - Warpfire Thrower!",
+    ["ex"] = "[X] - Berserker!",
   -- General
   ["g"] = "[G] - General *",
     ["gb"] = "[B] - Bye",
@@ -63,37 +83,30 @@ mod.vtgs = {
       ["gtt"] = "[T] - THAT was graceful",
       ["gtw"] = "[W] - When will you learn?",
   -- Hero
+  -- This section uses a funky redirection system.
+  -- A command ending in ">" will change the command to the first "word" of the value. In this case, "c" -> "Command"
+  -- The rest of the string (excluding the space after the redirection) will be prepended to the output.
+  -- If only the first letter of the redirected value is capitalised, it will be converted to lowercase.
+  -- If the WHOLE value is capitalised, the prependation will be capitalised.
+  -- e.g. ["hec"] = [VHEC] Kerillian, come here!
+  -- e.g. ["hegs"] = [VHEGS] KERILLIAN, SIGMAR
   ["h"] = "[H] - Hero *",
-  -- [E]lf, Kerillian
     ["he"] = "[E] - Kerillian, Waywatcher *",
-      ["hee"] = "[E] - Elf",
-      ["hec"] = "[C] - Elf, come here",
-      ["hew"] = "[W] - Elf, wait",
-  -- [D]warf, Bardin
+        ["he>"] = "c Kerillian,",
     ["hd"] = "[D] - Bardin, Dwarf Ranger *",
-      ["hdd"] = "[D] - Dwarf",
-      ["hdc"] = "[C] - Dwarf, come here",
-      ["hdw"] = "[W] - Dwarf, wait",
-  -- Witch-Hunter, [S]altzpyre
+        ["hd>"] = "c Bardin,",
     ["hs"] = "[S] - Saltzpyre, Witch Hunter *",
-      ["hss"] = "[S] - Saltzpyre",
-      ["hsc"] = "[C] - Saltzpyre, come here",
-      ["hsw"] = "[W] - Saltzpyre, wait",
-  -- Sergeant, [K]ruber
+        ["hs>"] = "c Saltzpyre,",
     ["hk"] = "[K] - Kruber, Mercenary *",
-      ["hkk"] = "[K] - Kruber",
-      ["hkc"] = "[C] - Kruber, come here",
-      ["hkw"] = "[W] - Kruber, wait",
-  -- [B]right-Wizard, Sienna
+        ["hk>"] = "c Kruber,",
     ["hb"] = "[B] - Sienna, Bright Wizard *",
-      ["hbb"] = "[B] - Wizard",
-      ["hbc"] = "[C] - Wizard, come here",
-      ["hbw"] = "[W] - Wizard, wait",
+        ["hb>"] = "c Sienna,",
   -- Item
   ["i"] = "[I] - Item *",
     ["ii"] = "[I] - There's items here",
     ["ia"] = "[A] - Art here",
-    ["ib"] = "[B] - Bomb here",
+    ["ib"] = "[B] - Barrel here",
+    ["ie"] = "[E] - Bomb here",
     ["if"] = "[F] - Incendiary bomb here",
     ["im"] = "[M] - Medical supplies here",
     ["ic"] = "[C] - Potion of concentration here",
@@ -103,7 +116,7 @@ mod.vtgs = {
     ["iq"] = "[Q] - Potion of speed here",
     ["is"] = "[S] - Potion of strength here",
   -- Monster
-  ["m"] = "[M] - Monster",
+  ["m"] = "[M] - Monster *",
     ["mc"] = "[C] - Chaos spawn!",
     ["mm"] = "[M] - Minotaur!",
     ["mr"] = "[R] - Rat Ogre!",
@@ -126,16 +139,9 @@ mod.vtgs = {
     ["qb"] = "[B] - Are we getting books?",
     ["qg"] = "[G] - Are we getting grims?",
     ["qw"] = "[W] - Which way?",
-  -- Special
-  ["s"] = "[S] - Special *",
-    ["sa"] = "[A] - Assassin!",
-    ["sb"] = "[B] - Blightstormer!",
-    ["sg"] = "[G] - Globadier!",
-    ["sl"] = "[L] - Life Leech!",
-    ["sp"] = "[P] - Packmaster!",
-    ["sr"] = "[R] - Ratling Gunner!",
-    ["ss"] = "[S] - Sack Rat!",
-    ["sw"] = "[W] - Warpfire Thrower!",
+  -- Self (see "Hero")
+  ["s"] = "[S] - Self *",
+    ["s>"] = "c I will",
   -- Talent
   ["t"] = "[T] - Talent *",
     ["tp"] = "[P] - I have proxy",
@@ -147,8 +153,11 @@ mod.vtgs = {
       ["tdb"] = "[B] - I have bomb duplication",
       ["tdm"] = "[M] - I have medicine duplication",
       ["tdp"] = "[P] - I have potion duplication",
+  -- Mercenary Kruber
+    ["tm"] = "[M] - Mercenary Kruber *",
+      ["tmr"] = "[R] - My shout will revive you",
   -- Ranger Bardin
-    ["tr"] = "[R] - Ranger Bardin Ammo*",
+    ["tr"] = "[R] - Ranger Bardin Ammo *",
       ["tra"] = "[A] - I have more ammo per pouch",
       ["trs"] = "[S] - I get ammo when you pick it up",
       ["trb"] = "[B] - I have bomb and potion chance",
@@ -162,6 +171,7 @@ mod.vtgs = {
     ["vn"] = "[N] - No",
     ["vs"] = "[S] - Sorry",
     ["vt"] = "[T] - Thanks",
+    ["vv"] = "[V] - Look out!",
     ["vw"] = "[W] - Wait",
     ["vy"] = "[Y] - Yes",
   -- Warning
@@ -170,6 +180,7 @@ mod.vtgs = {
     ["wb"] = "[B] - Behind us!",
     ["we"] = "[E] - Incoming hostiles!",
     ["wh"] = "[H] - Horde!",
+    ["wl"] = "[M] - Look out!",
     ["wm"] = "[M] - Monster!",
     ["ws"] = "[S] - Specials spawning!",
 }
@@ -177,6 +188,22 @@ mod.vtgs = {
 -- Build a list of commands that can be entered next
 -- Also calculates pixel width of the list and sorts keys
 mod.get_command = function ()
+  if mod.vtgs[mod.command .. ">"] then
+    -- Redirection
+    local temp_val = mod.vtgs[mod.command .. ">"]
+    mod.prepend_command = mod.command
+    local i = 0
+    local prepend_fields = {}
+    for s in string.gmatch(temp_val, "%S+") do
+      if i == 0 then
+        mod.command = s
+      else
+        table.insert(prepend_fields, s)
+      end
+      i = i + 1
+    end
+    mod.prepend_text = table.concat(prepend_fields, " ")
+  end
   local default_font = mod.simple_ui.fonts:get("default")
   mod.list = {}
   mod.list_keys = {}
@@ -184,9 +211,8 @@ mod.get_command = function ()
   mod.list_width = 0
 
   for k, v in pairs(mod.vtgs) do
-    -- "tier" is actually string.len(mod.command) but tracked separately
-    -- We use len in addition to match because when command is empty "%a" matches all entries
-    if string.len(k) == mod.tier and string.match(k, mod.command .. "%a") then
+    if string.len(k) == string.len(mod.command) + 1 and string.match(k, mod.command .. "%a") then
+      -- We use len in addition to match because when command is empty "%a" matches all entries
       mod.list_count = mod.list_count + 1
       mod.list[k] = v
       mod.list_keys[#mod.list_keys + 1] = k
@@ -233,7 +259,6 @@ mod.update = function(dt)
           -- Check that the command exists (partial commands must exist in the table!)
           if mod.vtgs[mod.command] then
             -- Build the list of "next" commands
-            mod.tier = mod.tier + 1
             mod.get_command()
             -- If there are no "next" commands, our command is the end of the chain
             if mod.list_count == 0 then
@@ -292,10 +317,10 @@ end
 
 -- Get rid of it
 mod.hide_window = function ()
-	if mod.window then
-		mod.window:destroy()
-		mod.window = nil
-	end
+  if mod.window then
+    mod.window:destroy()
+    mod.window = nil
+  end
 end
 
 -- Rebuild the window
@@ -320,8 +345,9 @@ mod.clear = function ()
   mod.command = ""
   mod.last_key = nil
   mod.activated = false
-  mod.tier = 1
   mod.trigger_clear = false
+  mod.prepend_text = ""
+  mod.prepend_command = ""
   Managers.input:device_unblock_all_services("keyboard", 1)
   Managers.input:device_unblock_all_services("mouse", 1)
   Managers.input:device_unblock_all_services("gamepad", 1)
@@ -330,6 +356,23 @@ end
 -- Grab command and put it in chat (also checks settings variables etc.)
 mod.send_command = function ()
   local command_text = string.sub(mod.vtgs[mod.command], 7)
+
+  -- Prepend text if command calls for it
+  if mod.prepend_text ~= "" then
+    mod.command = string.sub(mod.prepend_command, 1, -1) .. string.sub(mod.command, 2)
+    local first_two = string.sub(command_text, 1, 2)
+    if string.upper(command_text) == command_text then
+      command_text = string.upper(mod.prepend_text) .. " " .. command_text
+    elseif string.upper(first_two) ~= first_two then
+      command_text =
+        mod.prepend_text ..
+        " " ..
+        string.lower(string.sub(command_text, 1, 1)) ..
+        string.sub(command_text, 2)
+    else
+      command_text = mod.prepend_text .. " " .. command_text
+    end
+  end
 
   -- Prepend command if set
   local prepend = mod:get("vtgs_prepend_command")
