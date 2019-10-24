@@ -4,8 +4,8 @@ Are you the [i]greatest[/i]? Are your team mates [i]graceful[/i]? Do you yearn f
 
 If you answered the above questions, VTGS is here for you!
 
-Send messages like that one game that died :(
-but without the cool voice lines!
+Send messages like [strike]that one game that died :([/strike] Tribes Ascend and Smite
+- but without the cool voice lines!
 
 Full list of commands on [url=https://github.com/Flintlocket/vermintide-mods/wiki/VTGS]Git[/url]
 
