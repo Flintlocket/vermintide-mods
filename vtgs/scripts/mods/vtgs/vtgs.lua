@@ -25,16 +25,12 @@ mod.prepend_command = ""
 mod.vtgs = {
   -- Command
   ["c"] = "[C] - Command *",
-    ["cb"] = "[B] - Pick up the barrel",
-    ["ce"] = "[E] - Pick up the bomb", -- The E stands for Explosive!
     ["cc"] = "[C] - Come here!",
     ["cd"] = "[D] - Do the thing!",
     ["cf"] = "[F] - Push forward!",
-    ["cg"] = "[G] - Pick up the grimoire",
-    ["ch"] = "[H] - Pick up the healing",
-    ["cp"] = "[P] - Pick up the potion",
+    ["cp"] = "[P] - Pick Up *",
+      ["cp>"] = "i Pick up the",
     ["cr"] = "[R] - Retreat!",
-    ["ct"] = "[T] - Pick up the tome",
     ["cw"] = "[W] - Wait",
   -- Enemy
   ["e"] = "[E] - Enemy *",
@@ -42,15 +38,19 @@ mod.vtgs = {
     ["eb"] = "[B] - Blightstormer!",
     ["ec"] = "[C] - Chaos Warrior!",
     ["ee"] = "[E] - Sack Rat!",
+    ["ef"] = "[F] - Wargor!", -- F means Flag probably
     ["eg"] = "[G] - Globadier!",
-    ["ek"] = "[K] - Skaven Plague Monk!",
+    ["ek"] = "[K] - Skaven Plague Monks!",
     ["el"] = "[L] - Life Leech!",
+    ["em"] = "[M] - Mauler!",
+    ["eo"] = "[O] - Shields!", -- Get it because O looks like a shield hahaha :(
     ["ep"] = "[P] - Packmaster!",
     ["er"] = "[R] - Ratling Gunner!",
-    ["es"] = "[S] - Chaos Savage!",
+    ["es"] = "[S] - Chaos Savages!",
+    ["et"] = "[T] - Bestigor!",
     ["ev"] = "[V] - Storm Vermin!",
     ["ew"] = "[W] - Warpfire Thrower!",
-    ["ex"] = "[X] - Berserker!",
+    ["ex"] = "[X] - Berserkers!",
   -- General
   ["g"] = "[G] - General *",
     ["gb"] = "[B] - Bye",
@@ -103,18 +103,19 @@ mod.vtgs = {
         ["hb>"] = "c Sienna,",
   -- Item
   ["i"] = "[I] - Item *",
-    ["ii"] = "[I] - There's items here",
-    ["ia"] = "[A] - Art here",
-    ["ib"] = "[B] - Barrel here",
-    ["ie"] = "[E] - Bomb here",
-    ["if"] = "[F] - Incendiary bomb here",
-    ["im"] = "[M] - Medical supplies here",
-    ["ic"] = "[C] - Potion of concentration here",
-    ["id"] = "[D] - Healing draught here",
-    ["ih"] = "[H] - Healing stuff here",
-    ["ip"] = "[P] - Potion here",
-    ["iq"] = "[Q] - Potion of speed here",
-    ["is"] = "[S] - Potion of strength here",
+    ["ia"] = "[A] - Art",
+    ["ib"] = "[B] - Barrel",
+    ["ic"] = "[C] - Potion of concentration",
+    ["id"] = "[D] - Healing draught",
+    ["ie"] = "[E] - Bomb",
+    ["if"] = "[F] - Incendiary bomb",
+    ["ig"] = "[G] - Grimoire",
+    ["ih"] = "[H] - Healing",
+    ["im"] = "[M] - Medical supplies",
+    ["ip"] = "[P] - Potion",
+    ["iq"] = "[Q] - Potion of speed",
+    ["is"] = "[S] - Potion of strength",
+    ["it"] = "[T] - Tome",
   -- Monster
   ["m"] = "[M] - Monster *",
     ["mc"] = "[C] - Chaos spawn!",
@@ -191,7 +192,7 @@ mod.get_command = function ()
   if mod.vtgs[mod.command .. ">"] then
     -- Redirection
     local temp_val = mod.vtgs[mod.command .. ">"]
-    mod.prepend_command = mod.command
+    mod.prepend_command = mod.prepend_command .. mod.command
     local i = 0
     local prepend_fields = {}
     for s in string.gmatch(temp_val, "%S+") do
@@ -202,7 +203,11 @@ mod.get_command = function ()
       end
       i = i + 1
     end
-    mod.prepend_text = table.concat(prepend_fields, " ")
+    if mod.prepend_text == "" then
+      mod.prepend_text = table.concat(prepend_fields, " ")
+    else
+      mod.prepend_text = mod.prepend_text .. " " .. string.lower(table.concat(prepend_fields, " "))
+    end
   end
   local default_font = mod.simple_ui.fonts:get("default")
   mod.list = {}
