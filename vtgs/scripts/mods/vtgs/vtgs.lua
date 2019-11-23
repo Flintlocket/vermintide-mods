@@ -22,35 +22,27 @@ mod.list_keys = {}
 mod.trigger_clear = false
 mod.prepend_text = ""
 mod.prepend_command = ""
+-- Ah jeez that's a big table
 mod.vtgs = {
   -- Command
   ["c"] = "[C] - Command *",
     ["cc"] = "[C] - Come here!",
     ["cd"] = "[D] - Do the thing!",
     ["cf"] = "[F] - Push forward!",
+    ["ch"] = "[H] - Heal up",
     ["cp"] = "[P] - Pick Up *",
       ["cp>"] = "i Pick up the",
     ["cr"] = "[R] - Retreat!",
     ["cw"] = "[W] - Wait",
-  -- Enemy
-  ["e"] = "[E] - Enemy *",
-    ["ea"] = "[A] - Assassin!",
-    ["eb"] = "[B] - Blightstormer!",
-    ["ec"] = "[C] - Chaos Warrior!",
-    ["ee"] = "[E] - Sack Rat!",
-    ["ef"] = "[F] - Wargor!", -- F means Flag probably
-    ["eg"] = "[G] - Globadier!",
-    ["ek"] = "[K] - Skaven Plague Monks!",
-    ["el"] = "[L] - Life Leech!",
-    ["em"] = "[M] - Mauler!",
-    ["eo"] = "[O] - Shields!", -- Get it because O looks like a shield hahaha :(
-    ["ep"] = "[P] - Packmaster!",
-    ["er"] = "[R] - Ratling Gunner!",
-    ["es"] = "[S] - Chaos Savages!",
-    ["et"] = "[T] - Bestigor!",
-    ["ev"] = "[V] - Storm Vermin!",
-    ["ew"] = "[W] - Warpfire Thrower!",
-    ["ex"] = "[X] - Berserkers!",
+  -- Elite
+  ["e"] = "[E] - Elite *",
+    ["ea"] = "[A] - Archers!",
+    ["eb"] = "[B] - Bestigors!",
+    ["ec"] = "[C] - Chaos Warriors!",
+    ["em"] = "[M] - Maulers!",
+    ["ep"] = "[P] - Plague Monks!",
+    ["es"] = "[S] - Savages!",
+    ["ev"] = "[V] - Stormvermin!",
   -- General
   ["g"] = "[G] - General *",
     ["gb"] = "[B] - Bye",
@@ -91,7 +83,7 @@ mod.vtgs = {
   -- e.g. ["hec"] = [VHEC] Kerillian, come here!
   -- e.g. ["hegs"] = [VHEGS] KERILLIAN, SIGMAR
   ["h"] = "[H] - Hero *",
-    ["he"] = "[E] - Kerillian, Waywatcher *",
+    ["he"] = "[E] - Kerillian, Elf Waywatcher *",
         ["he>"] = "c Kerillian,",
     ["hd"] = "[D] - Bardin, Dwarf Ranger *",
         ["hd>"] = "c Bardin,",
@@ -113,9 +105,10 @@ mod.vtgs = {
     ["ih"] = "[H] - Healing",
     ["im"] = "[M] - Medical supplies",
     ["ip"] = "[P] - Potion",
-    ["iq"] = "[Q] - Potion of speed",
+    ["iq"] = "[Q] - Potion of speed", -- The quicks
     ["is"] = "[S] - Potion of strength",
     ["it"] = "[T] - Tome",
+    ["iw"] = "[W] - Essence chunk", -- The W is for weave I guess
   -- Monster
   ["m"] = "[M] - Monster *",
     ["mc"] = "[C] - Chaos spawn!",
@@ -134,15 +127,24 @@ mod.vtgs = {
   ["p"] = "[P] - Patrol *",
     ["pb"] = "[B] - Beastmen patrol!",
     ["pc"] = "[C] - Chaos patrol!",
+    ["pp"] = "[P] - Patrol!", -- Haha PP
     ["ps"] = "[S] - Stormvermin patrol!",
+  -- Special
+  ["s"] = "[S] - Special *",
+    ["sa"] = "[A] - Assassin!",
+    ["sb"] = "[B] - Blightstormer!",
+    ["sf"] = "[F] - Flag Wargor!", -- F means Flag probably
+    ["sg"] = "[G] - Globadier!",
+    ["sl"] = "[L] - Life Leech!",
+    ["sp"] = "[P] - Packmaster!",
+    ["sr"] = "[R] - Ratling Gunner!",
+    ["ss"] = "[S] - Sack Rat!",
+    ["sw"] = "[W] - Warpfire Thrower!",
   -- Question
   ["q"] = "[Q] - Question *",
     ["qb"] = "[B] - Are we getting books?",
     ["qg"] = "[G] - Are we getting grims?",
     ["qw"] = "[W] - Which way?",
-  -- Self (see "Hero")
-  ["s"] = "[S] - Self *",
-    ["s>"] = "c I will",
   -- Talent
   ["t"] = "[T] - Talent *",
     ["tp"] = "[P] - I have proxy",
@@ -152,7 +154,7 @@ mod.vtgs = {
   -- Duplication
     ["td"] = "[D] - Duplication *",
       ["tdb"] = "[B] - I have bomb duplication",
-      ["tdm"] = "[M] - I have medicine duplication",
+      ["tdh"] = "[H] - I have healing duplication",
       ["tdp"] = "[P] - I have potion duplication",
   -- Mercenary Kruber
     ["tm"] = "[M] - Mercenary Kruber *",
@@ -184,6 +186,9 @@ mod.vtgs = {
     ["wl"] = "[M] - Look out!",
     ["wm"] = "[M] - Monster!",
     ["ws"] = "[S] - Specials spawning!",
+  -- Self (see "Hero" for redirection explanation)
+  ["z"] = "[Z] - Self *",
+    ["z>"] = "c I will",
 }
 
 -- Build a list of commands that can be entered next
