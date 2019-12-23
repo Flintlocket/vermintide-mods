@@ -1,0 +1,11 @@
+mod = [
+	"givebuff"
+]
+
+package = [
+	"resource_packages/givebuff/givebuff"
+]
+
+lua = [
+	"scripts/mods/givebuff/*"
+]
