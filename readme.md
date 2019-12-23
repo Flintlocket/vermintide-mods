@@ -2,4 +2,4 @@
 
 It is me, the boy.
 
-Check the wiki for information on each more or something.
+Check the wiki for information on each mod or something.
