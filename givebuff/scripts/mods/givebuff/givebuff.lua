@@ -22,7 +22,7 @@ mod:command("givebuff", CMD_GIVEBUFF_HELP, function(template, ...)
     table.sort(templates)
     template_list = table.concat(templates, "\n")
     -- Shall we... write to file?
-    if template == "list" and args then
+    if template == "list" and not args == "" then
       local template_file, io_err, io_err_code = io.open(args, "w")
       if not template_file then
         mod:echo("Cannot open file '%s' - %s (%d)", args, io_err, io_err_code)
