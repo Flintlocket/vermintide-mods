@@ -11,7 +11,7 @@ VTGS_SIMPLE_KEY_MAP = {
     ["a"] = {"keyboard", "a", "pressed"},
   },
 }
-VTGS_SIMPLE_KEY_MAP.xb1 = VTGS_SIMPLE_KEY_MAP.win32
+-- VTGS_SIMPLE_KEY_MAP.xb1 = VTGS_SIMPLE_KEY_MAP.win32
 
 -- Wew variables
 mod.command = ""
@@ -244,8 +244,8 @@ mod.input_service = nil
 mod.on_all_mods_loaded = function ()
   Managers.input:create_input_service("vtgs_service", "VTGS_SIMPLE_KEY_MAP")
   Managers.input:map_device_to_service("vtgs_service", "keyboard")
-  Managers.input:map_device_to_service("vtgs_service", "mouse")
-  Managers.input:map_device_to_service("vtgs_service", "gamepad")
+  -- Managers.input:map_device_to_service("vtgs_service", "mouse")
+  -- Managers.input:map_device_to_service("vtgs_service", "gamepad")
   mod.input_service = Managers.input:get_service("vtgs_service")
   -- mod:echo("VTGS Loaded")
 end
@@ -342,8 +342,8 @@ end
 -- Block other input devices so we can do the thing without worrying about other keybinds
 mod.activate = function ()
   Managers.input:block_device_except_service("vtgs_service", "keyboard", 1, "keybind")
-  Managers.input:block_device_except_service("vtgs_service", "mouse", 1, "keybind")
-  Managers.input:block_device_except_service("vtgs_service", "gamepad", 1, "keybind")
+  -- Managers.input:block_device_except_service("vtgs_service", "mouse", 1, "keybind")
+  -- Managers.input:block_device_except_service("vtgs_service", "gamepad", 1, "keybind")
   mod.activated = true
   mod.get_command()
   mod.show_window()
@@ -359,8 +359,8 @@ mod.clear = function ()
   mod.prepend_text = ""
   mod.prepend_command = ""
   Managers.input:device_unblock_all_services("keyboard", 1)
-  Managers.input:device_unblock_all_services("mouse", 1)
-  Managers.input:device_unblock_all_services("gamepad", 1)
+  -- Managers.input:device_unblock_all_services("mouse", 1)
+  -- Managers.input:device_unblock_all_services("gamepad", 1)
 end
 
 -- Grab command and put it in chat (also checks settings variables etc.)
