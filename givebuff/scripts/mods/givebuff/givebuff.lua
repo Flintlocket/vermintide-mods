@@ -83,7 +83,6 @@ mod.handle_fav_concanter = function(self, suppress)
 	local team = mod:get("gb_team")
 	mod:give_buff("cooldown_reduction_potion_increased", team, true)
 	mod:give_buff("damage_boost_potion_increased", team, true)
-	mod:give_buff("invulnerability_potion_increased", team, true)
 	mod:give_buff("speed_boost_potion_increased", team, true)
 	if suppress then
 		return

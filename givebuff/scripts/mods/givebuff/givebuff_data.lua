@@ -1130,8 +1130,8 @@ mod_data.options_widgets = {
 			{
 				["setting_name"] = "gb_key_fav_invincible",
 				["widget_type"] = "keybind",
-				["text"] = "Invincibility",
-				["tooltip"] = "Temporary invincibility",
+				["text"] = "Undying",
+				["tooltip"] = "Temporarily unkillable",
 				["default_value"] = {},
 				["action"] = "handle_fav_invincible", -- twitch_vote_buff_invincibility
 			},
